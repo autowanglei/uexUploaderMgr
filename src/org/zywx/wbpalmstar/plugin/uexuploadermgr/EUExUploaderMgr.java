@@ -363,7 +363,7 @@ public class EUExUploaderMgr extends EUExBase {
                 if (null != cookie) {
                     conn.setRequestProperty("Cookie", cookie);
                 }
-
+                conn.setInstanceFollowRedirects(true);// 自动处理重定向
                 conn.setReadTimeout(TIME_OUT);
                 conn.setConnectTimeout(TIME_OUT);
                 conn.setDoInput(true); // 允许输入流
@@ -436,7 +436,7 @@ public class EUExUploaderMgr extends EUExBase {
                 dos.write(end_data);
                 dos.flush();
                 int res = conn.getResponseCode();
-                if (res == 200) {
+                if (res >= HttpsURLConnection.HTTP_OK && res < 300) {
                     String js = SCRIPT_HEADER + "if("
                             + F_CALLBACK_NAME_UPLOADSTATUS + "){"
                             + F_CALLBACK_NAME_UPLOADSTATUS + "(" + inOpCode
